@@ -19,13 +19,13 @@ describe('constructor', () => {
     it('Contains starting port equal to the name property of the object passed in as argument', () => {
         expect(ship).toEqual(expect.objectContaining({startingPort: 'Yokohama'}));
     });
-    it('Throws an error if it does not receive an object as argument', () => {
+    it('Throws an error if it does not receive a Port object as argument', () => {
         expect(() => {
             const ship2 = new Ship('JLB Credit');
         }).toThrow('Please pass in a valid port object')
     });
-    it('Throws an error if object does not contain a name property', () => {
-        const port2 = {age: 3};
+    it('Throws an error if object is not a port instance', () => {
+        const port2 = {name: 'Jeff', age: 3};
         expect(() => {
             const ship2 = new Ship(port2);
         }).toThrow('Please pass in a valid port object');
@@ -80,5 +80,12 @@ describe('dock', () => {
         ship.dock = port2;
 
         expect(ship.startingPort).toBe('Ishinomaki');
+    });
+    it('Throws an error if the object is not an instance of the port class', () => {
+        let port2 = {name: 'Jeff', passengers: [], isDocked: true};
+        
+        expect(() => {
+            ship.dock = port2;
+        }).toThrow('Please pass in a valid port object');
     });
 });

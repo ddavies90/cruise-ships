@@ -12,7 +12,12 @@ describe('constructor', () => {
     });
     it('Takes a string as an argument only', () => {
         expect(() => {
-            let port2 = new Port(8382)
+            const port2 = new Port(8382)
+        }).toThrow('Please enter a valid port name');
+    });
+    it('Will throw an error if an empty string is passed in', () => {
+        expect(() => {
+            const port2 = new Port('');
         }).toThrow('Please enter a valid port name');
     });
 });
