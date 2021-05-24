@@ -16,8 +16,14 @@ describe('constructor', () => {
     it('Creates new instance of the Ship object', () => {
         expect(ship).toBeInstanceOf(Ship);
     });
+    it('passengers array starts empty', () => {
+        expect(ship.passengers).toEqual([]);
+    });
+    it('isDocked Has a starting state of true', () => {
+        expect(ship.isDocked).toBe(true);
+    });
     it('Contains starting port equal to the name property of the object passed in as argument', () => {
-        expect(ship).toEqual(expect.objectContaining({startingPort: 'Yokohama'}));
+        expect(ship).toEqual(expect.objectContaining({homePort: 'Yokohama'}));
     });
     it('Throws an error if it does not receive a Port object as argument', () => {
         expect(() => {
@@ -65,21 +71,22 @@ describe('boardPassenger', () => {
 });
 
 describe('setSail', () => {
-    it('isDocked Has a starting state of true', () => {
-        expect(ship.isDocked).toBe(true);
-    });
     it('On setting sail, isDocked should now be false', ()=> {
-        ship.setSail();
+        ship.setSail = 'Midway';
         expect(ship.isDocked).toBe(false);
     });
+    it('previousPort is set to the name of port the ship is departing from', () => {
+        ship.setSail = port;
+        expect(ship.previousPort).toBe('Yokohama')
+    })
 });
 
 describe('dock', () => {
-    it('Changes startingPort to value of name property of new port', () => {
+    it('Changes previousPort to value of name property of new port', () => {
         const port2 = new Port('Ishinomaki');
         ship.dock = port2;
 
-        expect(ship.startingPort).toBe('Ishinomaki');
+        expect(ship.previousPort).toBe('Ishinomaki');
     });
     it('Throws an error if the object is not an instance of the port class', () => {
         let port2 = {name: 'Jeff', passengers: [], isDocked: true};
