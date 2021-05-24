@@ -1,12 +1,18 @@
 const { TestScheduler } = require("@jest/core");
-const {Ship, Port} = require("../src/cruise-ships")
+const {Ship, Port, Itinerary} = require("../src/cruise-ships")
 
+let schedule;
 let ship;
-let port;
+let yokohama;
+let okinawa;
+let miyajima;
 
 beforeEach(() => {
-    port = new Port('Yokohama')
-    ship = new Ship(port);
+    yokohama = new Port('Yokohama');
+    okinawa = new Port('Okinawa');
+    miyajima = new Port('Miyajima');
+    schedule = new Itinerary([okinawa, miyajima]);
+    ship = new Ship(yokohama, schedule);
 });
 
 // As a cruise ship captain,
@@ -22,8 +28,8 @@ describe('constructor', () => {
     it('isDocked Has a starting state of true', () => {
         expect(ship.isDocked).toBe(true);
     });
-    it('Contains starting port equal to the name property of the object passed in as argument', () => {
-        expect(ship).toEqual(expect.objectContaining({homePort: 'Yokohama'}));
+    it('Contains starting port equal to the port object passed in as argument', () => {
+        expect(ship).toEqual(expect.objectContaining({currentPort: yokohama}));
     });
     it('Throws an error if it does not receive a Port object as argument', () => {
         expect(() => {
@@ -72,27 +78,19 @@ describe('boardPassenger', () => {
 
 describe('setSail', () => {
     it('On setting sail, isDocked should now be false', ()=> {
-        ship.setSail = 'Midway';
+        ship.setSail = okinawa;
         expect(ship.isDocked).toBe(false);
     });
     it('previousPort is set to the name of port the ship is departing from', () => {
-        ship.setSail = port;
-        expect(ship.previousPort).toBe('Yokohama')
-    })
+        ship.setSail = ship.currentPort;
+        expect(ship.previousPort).toBe(yokohama)
+    });
+    //Add test to check if currentPort is now null
 });
 
 describe('dock', () => {
-    it('Changes previousPort to value of name property of new port', () => {
-        const port2 = new Port('Ishinomaki');
-        ship.dock = port2;
-
-        expect(ship.previousPort).toBe('Ishinomaki');
-    });
-    it('Throws an error if the object is not an instance of the port class', () => {
-        let port2 = {name: 'Jeff', passengers: [], isDocked: true};
-        
-        expect(() => {
-            ship.dock = port2;
-        }).toThrow('Please pass in a valid port object');
+    it('Changes currentPort object to be first item in itinerary', () => {
+        ship.dock();
+        expect(ship.currentPort).toBe(okinawa);
     });
 });
