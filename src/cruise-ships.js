@@ -1,12 +1,13 @@
 
 class Ship {
-    constructor(startingPort) {
-        if (!(startingPort instanceof Port)) {
+    constructor(homePort) {
+        if (!(homePort instanceof Port)) {
             throw new Error('Please pass in a valid port object')
         };
-        this.startingPort = startingPort.name;
+        this.homePort = homePort.name;
         this.passengers = [];
         this.isDocked = true;
+        this.previousPort = null;
     };
     set boardPassenger(passenger) {
         if (!passenger || typeof(passenger) !== 'string' || passenger.length < 2 || !isNaN(parseInt(passenger)) || (/\d/).test(passenger)) {
@@ -15,14 +16,15 @@ class Ship {
         this.passengers.push(passenger);
         };
     };
-    setSail() {
+    set setSail(port) {
         this.isDocked = false;
+        this.previousPort = port.name;
     };
     set dock(portName) {
         if (!(portName instanceof Port)) {
             throw new Error('Please pass in a valid port object')
         };
-        this.startingPort = portName.name;
+        this.previousPort = portName.name;
     };
 };
 
