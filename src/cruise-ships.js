@@ -1,10 +1,11 @@
 
 class Ship {
-    constructor(homePort) {
-        if (!(homePort instanceof Port)) {
+    constructor(currentPort, itinerary) {
+        if (!(currentPort instanceof Port)) {
             throw new Error('Please pass in a valid port object')
         };
-        this.homePort = homePort.name;
+        this.currentPort = currentPort;
+        this.itinerary = itinerary;
         this.passengers = [];
         this.isDocked = true;
         this.previousPort = null;
@@ -18,13 +19,11 @@ class Ship {
     };
     set setSail(port) {
         this.isDocked = false;
-        this.previousPort = port.name;
+        this.previousPort = port;
     };
-    set dock(portName) {
-        if (!(portName instanceof Port)) {
-            throw new Error('Please pass in a valid port object')
-        };
-        this.previousPort = portName.name;
+    dock() {
+        this.currentPort = this.itinerary[0];
+        // this.itinerary = this.itinerary.slice(1); Need to remove item from schedule or somehow increment for next docking
     };
 };
 
@@ -34,8 +33,15 @@ class Port {
             throw new Error('Please enter a valid port name');
         };
             this.name = name;
-    }
-}
+    };
+};
+
+class Itinerary {
+    //I would like this to take individual port objects and push them to the array rather than have it accept an array ?use getter and setter functions
+    constructor(ports) {
+        this.ports = ports;
+    };
+};
 
 
-module.exports = {Ship, Port}
+module.exports = {Ship, Port, Itinerary}
