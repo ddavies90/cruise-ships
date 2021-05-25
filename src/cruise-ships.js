@@ -1,10 +1,10 @@
 
 class Ship {
-    constructor(currentPort, itinerary) {
-        if (!(currentPort instanceof Port)) {
-            throw new Error('Please pass in a valid port object')
+    constructor(itinerary) {
+        if (!(itinerary instanceof Itinerary)) {
+            throw new Error('Please pass in a valid Itinerary object')
         };
-        this.currentPort = currentPort;
+        this.currentPort = itinerary.ports[0];
         this.itinerary = itinerary;
         this.passengers = [];
         this.isDocked = true;
@@ -22,7 +22,7 @@ class Ship {
         this.previousPort = port;
     };
     dock() {
-        this.currentPort = this.itinerary[0];
+        this.currentPort = this.itinerary.ports[0];
         // this.itinerary = this.itinerary.slice(1); Need to remove item from schedule or somehow increment for next docking
     };
 };
