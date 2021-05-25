@@ -17,13 +17,14 @@ class Ship {
         this.passengers.push(passenger);
         };
     };
-    set setSail(port) {
+    setSail() {
         this.isDocked = false;
-        this.previousPort = port;
+        this.previousPort = this.currentPort;
     };
     dock() {
-        this.currentPort = this.itinerary.ports[0];
-        // this.itinerary = this.itinerary.slice(1); Need to remove item from schedule or somehow increment for next docking
+        const prevPortIndex = this.itinerary.ports.indexOf(this.previousPort);
+        this.currentPort = this.itinerary.ports[prevPortIndex + 1];
+        // need to cycle to next item in array once dock is called - options: Create counter to increment and use that index to select port. 
     };
 };
 
