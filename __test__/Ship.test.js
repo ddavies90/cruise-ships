@@ -1,4 +1,3 @@
-const { TestScheduler } = require("@jest/core");
 const {Ship, Port, Itinerary} = require("../src/cruise-ships")
 
 let schedule;
