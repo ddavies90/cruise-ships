@@ -3,16 +3,14 @@ const {Ship, Port, Itinerary} = require("../src/cruise-ships")
 
 let schedule;
 let ship;
-let yokohama;
 let okinawa;
 let miyajima;
 
 beforeEach(() => {
-    yokohama = new Port('Yokohama');
     okinawa = new Port('Okinawa');
     miyajima = new Port('Miyajima');
     schedule = new Itinerary([okinawa, miyajima]);
-    ship = new Ship(yokohama, schedule);
+    ship = new Ship(schedule);
 });
 
 // As a cruise ship captain,
@@ -28,19 +26,19 @@ describe('constructor', () => {
     it('isDocked Has a starting state of true', () => {
         expect(ship.isDocked).toBe(true);
     });
-    it('Contains starting port equal to the port object passed in as argument', () => {
-        expect(ship).toEqual(expect.objectContaining({currentPort: yokohama}));
+    it('Contains starting port equal to the first port object in the itinerary passed in as argument', () => {
+        expect(ship).toEqual(expect.objectContaining({currentPort: okinawa}));
     });
-    it('Throws an error if it does not receive a Port object as argument', () => {
+    it('Throws an error if it does not receive a Itinerary object as argument', () => {
         expect(() => {
             const ship2 = new Ship('JLB Credit');
-        }).toThrow('Please pass in a valid port object')
+        }).toThrow('Please pass in a valid Itinerary object')
     });
-    it('Throws an error if object is not a port instance', () => {
-        const port2 = {name: 'Jeff', age: 3};
+    it('Throws an error if object is not an Itinerary instance', () => {
+        const schedule2 = {ports: ['Jeff', okinawa]};
         expect(() => {
-            const ship2 = new Ship(port2);
-        }).toThrow('Please pass in a valid port object');
+            const ship2 = new Ship(schedule2);
+        }).toThrow('Please pass in a valid Itinerary object');
     });
 });
 
@@ -83,7 +81,7 @@ describe('setSail', () => {
     });
     it('previousPort is set to the name of port the ship is departing from', () => {
         ship.setSail = ship.currentPort;
-        expect(ship.previousPort).toBe(yokohama)
+        expect(ship.previousPort).toBe(okinawa)
     });
     //Add test to check if currentPort is now null
 });
