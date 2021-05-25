@@ -76,11 +76,11 @@ describe('boardPassenger', () => {
 
 describe('setSail', () => {
     it('On setting sail, isDocked should now be false', ()=> {
-        ship.setSail = okinawa;
+        ship.setSail();
         expect(ship.isDocked).toBe(false);
     });
     it('previousPort is set to the name of port the ship is departing from', () => {
-        ship.setSail = ship.currentPort;
+        ship.setSail();
         expect(ship.previousPort).toBe(okinawa)
     });
     //Add test to check if currentPort is now null
@@ -88,7 +88,8 @@ describe('setSail', () => {
 
 describe('dock', () => {
     it('Changes currentPort object to be first item in itinerary', () => {
+        ship.setSail();
         ship.dock();
-        expect(ship.currentPort).toBe(okinawa);
+        expect(ship.currentPort).toBe(miyajima);
     });
 });
