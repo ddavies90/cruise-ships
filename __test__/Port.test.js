@@ -1,17 +1,20 @@
 const Port = require("../src/port");
 
-let port;
+let ishinomaki;
 
 beforeEach(() => {
-    port = new Port('Ishinomaki');
+    ishinomaki = new Port('Ishinomaki');
 });
 
 describe('constructor', () => {
     it('Creates new instance of the Port object', () => {
-        expect(port).toBeInstanceOf(Port);
+        expect(ishinomaki).toBeInstanceOf(Port);
     });
-    it('contains name property', () => {
-        expect(port.hasOwnProperty('name')).toEqual(true);
+    it('Contains name property', () => {
+        expect(ishinomaki.hasOwnProperty('name')).toEqual(true);
+    });
+    it('Contains property called ships which holds currently docked ships', () => {
+        expect(ishinomaki.hasOwnProperty('ships')).toEqual(true);
     });
     it('Takes a string as an argument only', () => {
         expect(() => {
@@ -24,4 +27,26 @@ describe('constructor', () => {
         }).toThrow('Please enter a valid port name');
     });
 });
+
+describe('addShip', () => {
+    it('Adds a ship to the ships array', () => {
+        const ship = {currentPort: ishinomaki};
+        const ship2 = {currentPort: ishinomaki};
+        ishinomaki.addShip(ship);
+        ishinomaki.addShip(ship2);
+        expect(ishinomaki.ships).toEqual([ship, ship2]);
+    });
+});
+
+describe('removeShip', () => {
+    //This test passes if the ships contain exactly the same properties and values
+    it('Removes a ship from the ships array', () => {
+        const ship = {currentPort: ishinomaki, name: 'Differentiate'};
+        const ship2 = {currentPort: ishinomaki, name: 'The two'};
+        ishinomaki.addShip(ship);
+        ishinomaki.addShip(ship2);
+        ishinomaki.removeShip(ship2);
+        expect(ishinomaki.ships).toStrictEqual([ship]);
+    });
+})
 
