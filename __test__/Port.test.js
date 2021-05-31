@@ -1,4 +1,4 @@
-const {Port} = require("../src/cruise-ships");
+const Port = require("../src/port");
 
 let port;
 

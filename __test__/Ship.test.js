@@ -1,4 +1,4 @@
-const {Ship, Port, Itinerary} = require("../src/cruise-ships")
+const Ship = require("../src/ship")
 
 let schedule;
 let ship;
@@ -6,9 +6,9 @@ let okinawa;
 let miyajima;
 
 beforeEach(() => {
-    okinawa = new Port('Okinawa');
-    miyajima = new Port('Miyajima');
-    schedule = new Itinerary([okinawa, miyajima]);
+    okinawa = {name: 'Okinawa'};
+    miyajima = {name: 'Miyajima'};
+    schedule = {ports: [okinawa, miyajima]};
     ship = new Ship(schedule);
 });
 
@@ -28,16 +28,10 @@ describe('constructor', () => {
     it('Contains starting port equal to the first port object in the itinerary passed in as argument', () => {
         expect(ship).toEqual(expect.objectContaining({currentPort: okinawa}));
     });
-    it('Throws an error if it does not receive a Itinerary object as argument', () => {
+    it('Throws an error if it does not receive an object as argument', () => {
         expect(() => {
             const ship2 = new Ship('JLB Credit');
-        }).toThrow('Please pass in a valid Itinerary object')
-    });
-    it('Throws an error if object is not an Itinerary instance', () => {
-        const schedule2 = {ports: ['Jeff', okinawa]};
-        expect(() => {
-            const ship2 = new Ship(schedule2);
-        }).toThrow('Please pass in a valid Itinerary object');
+        }).toThrow('Please pass in a valid object')
     });
 });
 
