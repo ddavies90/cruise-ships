@@ -1,20 +1,18 @@
-const Ship = require("../src/ship")
+const Ship = require("../src/ship");
 
 let schedule;
 let ship;
 let okinawa;
 let miyajima;
+const addShip = jest.fn(); //Is this best practice for setting a method in a stub with a specific name?
 
 beforeEach(() => {
-    okinawa = {name: 'Okinawa'};
-    miyajima = {name: 'Miyajima'};
+    okinawa = {name: 'Okinawa', addShip, ships: []};
+    miyajima = {name: 'Miyajima', addShip, ships: []};
     schedule = {ports: [okinawa, miyajima]};
     ship = new Ship(schedule);
 });
 
-// As a cruise ship captain,
-// So I can get passengers aboard a ship,
-// I want a ship to have a starting port.
 describe('constructor', () => {
     it('Creates new instance of the Ship object', () => {
         expect(ship).toBeInstanceOf(Ship);
@@ -22,10 +20,7 @@ describe('constructor', () => {
     it('passengers array starts empty', () => {
         expect(ship.passengers).toEqual([]);
     });
-    it('isDocked Has a starting state of true', () => {
-        expect(ship.isDocked).toBe(true);
-    });
-    it('Contains starting port equal to the first port object in the itinerary passed in as argument', () => {
+    it('Contains currentPort property equal to the first port object in the itinerary passed in as argument', () => {
         expect(ship).toEqual(expect.objectContaining({currentPort: okinawa}));
     });
     it('Throws an error if it does not receive an object as argument', () => {
@@ -33,9 +28,16 @@ describe('constructor', () => {
             const ship2 = new Ship('JLB Credit');
         }).toThrow('Please pass in a valid object')
     });
+    xit('Adds ship to the port ports array when instantiated', () => {
+        const dover = {name: 'Dover', ships: [], addShip}
+        const itin = {ports: [dover]}
+        const ship2 = new Ship(itin);
+        //not happy with this - How can I better spy in to this call? 
+        expect(addShip).toHaveBeenLastCalledWith(ship2);
+    })
 });
 
-//Getting passengers aboard ?how will this work ?Counter or array of people <- probably better to be array but will passenger also be object? or just name
+
 describe('boardPassenger', () => {
     it("Adds passenger to ship's passenger array", () => {
         ship.boardPassenger = 'Lando Norris';
@@ -68,21 +70,37 @@ describe('boardPassenger', () => {
 });
 
 describe('setSail', () => {
-    it('On setting sail, isDocked should now be false', ()=> {
-        ship.setSail();
-        expect(ship.isDocked).toBe(false);
-    });
     it('previousPort is set to the name of port the ship is departing from', () => {
         ship.setSail();
-        expect(ship.previousPort).toBe(okinawa)
+        expect(ship.previousPort).toBe(okinawa);    
     });
-    //Add test to check if currentPort is now null
+    it('Sets currentPort to null when setting sail', () => {
+        ship.setSail();
+        expect(ship.currentPort).toBe(null);
+    });
+    it('Throws an error when the next item in the ports array is undefined - no destination!', () => {
+        ship.currentPort = schedule.ports[1];
+        expect(() => {
+            ship.setSail();
+        }).toThrow('The ship can not leave the dock without a destination');
+    });
 });
 
 describe('dock', () => {
-    it('Changes currentPort object to be first item in itinerary', () => {
+    it('Changes currentPort object to be next indexed item in itinerary', () => {
         ship.setSail();
         ship.dock();
         expect(ship.currentPort).toBe(miyajima);
+    });
+    it('Adds ship to ports array on the port object', () =>
+    {
+        ship.setSail();
+        ship.dock();
+        expect(ship.currentPort.addShip).toHaveBeenCalledWith('jeff');
+    });
+    it('Will not dock if already docked', () => {
+        expect(() => {
+            ship.dock();
+        }).toThrow('The ship is already docked');
     });
 });
