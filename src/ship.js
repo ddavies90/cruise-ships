@@ -1,4 +1,3 @@
-
 class Ship {
     constructor(itinerary) {
         if (typeof itinerary !== 'object') {
@@ -7,8 +6,8 @@ class Ship {
         this.currentPort = itinerary.ports[0];
         this.itinerary = itinerary;
         this.passengers = [];
-        this.isDocked = true;
         this.previousPort = null;
+        this.currentPort.addShip(this);
     };
     set boardPassenger(passenger) {
         if (!passenger || typeof passenger !== 'string' || passenger.length < 2 || !isNaN(parseInt(passenger)) || (/\d/).test(passenger)) {
@@ -18,13 +17,23 @@ class Ship {
         };
     };
     setSail() {
-        this.isDocked = false;
-        this.previousPort = this.currentPort;
+        const currentPortIndex = this.itinerary.ports.indexOf(this.currentPort);
+        if (this.itinerary.ports[currentPortIndex + 1] !== undefined) {
+            this.previousPort = this.currentPort;
+            this.currentPort = null;
+        } else {
+            throw new Error('The ship can not leave the dock without a destination');
+        };
     };
     dock() {
         const prevPortIndex = this.itinerary.ports.indexOf(this.previousPort);
-        this.currentPort = this.itinerary.ports[prevPortIndex + 1];
-        // need to cycle to next item in array once dock is called - options: Create counter to increment and use that index to select port. 
+        //If not docked
+        if (!(this.currentPort)) {
+            this.currentPort = this.itinerary.ports[prevPortIndex + 1];
+            this.currentPort.addShip(this);
+        } else {
+            throw new Error('The ship is already docked');
+        };
     };
 };
 
