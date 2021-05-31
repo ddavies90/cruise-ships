@@ -1,8 +1,8 @@
 
 class Ship {
     constructor(itinerary) {
-        if (!(itinerary instanceof Itinerary)) {
-            throw new Error('Please pass in a valid Itinerary object')
+        if (typeof itinerary !== 'object') {
+            throw new Error('Please pass in a valid object')
         };
         this.currentPort = itinerary.ports[0];
         this.itinerary = itinerary;
@@ -11,7 +11,7 @@ class Ship {
         this.previousPort = null;
     };
     set boardPassenger(passenger) {
-        if (!passenger || typeof(passenger) !== 'string' || passenger.length < 2 || !isNaN(parseInt(passenger)) || (/\d/).test(passenger)) {
+        if (!passenger || typeof passenger !== 'string' || passenger.length < 2 || !isNaN(parseInt(passenger)) || (/\d/).test(passenger)) {
             throw new Error('Please enter a name to use this function')
         } else {
         this.passengers.push(passenger);
@@ -28,21 +28,6 @@ class Ship {
     };
 };
 
-class Port {
-    constructor(name) {
-        if(!name || typeof(name) !== 'string') {
-            throw new Error('Please enter a valid port name');
-        };
-            this.name = name;
-    };
-};
-
-class Itinerary {
-    //I would like this to take individual port objects and push them to the array rather than have it accept an array ?use getter and setter functions
-    constructor(ports) {
-        this.ports = ports;
-    };
-};
 
 
-module.exports = {Ship, Port, Itinerary}
+module.exports = Ship
