@@ -4,12 +4,10 @@ let schedule;
 let ship;
 let okinawa;
 let miyajima;
-const addShip = jest.fn(); //Is this best practice for setting a method in a stub with a specific name?
-const removeShip = jest.fn();
 
 beforeEach(() => {
-    okinawa = {name: 'Okinawa', addShip, removeShip, ships: []};
-    miyajima = {name: 'Miyajima', addShip, removeShip, ships: []};
+    okinawa = {name: 'Okinawa', addShip: jest.fn(), removeShip: jest.fn(), ships: []};
+    miyajima = {name: 'Miyajima', addShip: jest.fn(), removeShip: jest.fn(), ships: []};
     schedule = {ports: [okinawa, miyajima]};
     ship = new Ship('Highwind', schedule);
 });
@@ -29,12 +27,11 @@ describe('constructor', () => {
             const ship2 = new Ship('Ragnarok', 'JLB Credit');
         }).toThrow('Please pass in a valid object')
     });
-    xit('Adds ship to the port ports array when instantiated', () => {
-        const dover = {name: 'Dover', ships: [], addShip}
+    it('Adds ship to the port ports array when instantiated', () => {
+        const dover = {name: 'Dover', ships: [], addShip: jest.fn()}
         const itin = {ports: [dover]}
         const ship2 = new Ship('HMS Pepe', itin);
-        //not happy with this - How can I better spy in to this call? 
-        expect(addShip).toHaveBeenLastCalledWith(ship2);
+        expect(ship2.currentPort.addShip).toHaveBeenCalledWith(ship2);
     })
 });
 
@@ -79,10 +76,9 @@ describe('setSail', () => {
         ship.setSail();
         expect(ship.currentPort).toBe(null);
     });
-    //Below test passes but 
     it('Calls removeShip on the port object the ship is departing from', () => {
         ship.setSail();
-        expect(ship.previousPort.removeShip).not.toHaveBeenCalledWith(ship);
+        expect(ship.previousPort.removeShip).toHaveBeenCalledWith(ship);
     });
     it('Throws an error when the next item in the ports array is undefined - no destination!', () => {
         ship.currentPort = schedule.ports[1];
@@ -98,8 +94,8 @@ describe('dock', () => {
         ship.dock();
         expect(ship.currentPort).toBe(miyajima);
     });
-    //This works when test asserts ship rather than jeff, but shows that addShip generally has been called multiple times - Need to refactor this
-    xit('Adds ship to ports array on the port object', () =>
+
+    it('Adds ship to ports array on the port object', () =>
     {
         ship.setSail();
         ship.dock();
