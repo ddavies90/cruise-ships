@@ -30,8 +30,8 @@ describe('constructor', () => {
 
 describe('addShip', () => {
     it('Adds a ship to the ships array', () => {
-        const ship = {currentPort: ishinomaki};
-        const ship2 = {currentPort: ishinomaki};
+        const ship = {name: 'Surge', currentPort: ishinomaki};
+        const ship2 = {name: 'Highwind', currentPort: ishinomaki};
         ishinomaki.addShip(ship);
         ishinomaki.addShip(ship2);
         expect(ishinomaki.ships).toEqual([ship, ship2]);
@@ -39,10 +39,10 @@ describe('addShip', () => {
 });
 
 describe('removeShip', () => {
-    //This test passes if the ships contain exactly the same properties and values
+    //This test passes if the ships contain exactly the same properties and values so added name to test it actually works - Need to think of a way of testing this without this work around.
     it('Removes a ship from the ships array', () => {
-        const ship = {currentPort: ishinomaki, name: 'Differentiate'};
-        const ship2 = {currentPort: ishinomaki, name: 'The two'};
+        const ship = {currentPort: ishinomaki, name: 'Barry'};
+        const ship2 = {currentPort: ishinomaki, name: 'Paul'};
         ishinomaki.addShip(ship);
         ishinomaki.addShip(ship2);
         ishinomaki.removeShip(ship2);

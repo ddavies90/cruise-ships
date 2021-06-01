@@ -1,8 +1,9 @@
 class Ship {
-    constructor(itinerary) {
+    constructor(name, itinerary) {
         if (typeof itinerary !== 'object') {
             throw new Error('Please pass in a valid object')
         };
+        this.name = name;
         this.currentPort = itinerary.ports[0];
         this.itinerary = itinerary;
         this.passengers = [];
@@ -20,6 +21,7 @@ class Ship {
         const currentPortIndex = this.itinerary.ports.indexOf(this.currentPort);
         if (this.itinerary.ports[currentPortIndex + 1] !== undefined) {
             this.previousPort = this.currentPort;
+            this.previousPort.removeShip(this);
             this.currentPort = null;
         } else {
             throw new Error('The ship can not leave the dock without a destination');
