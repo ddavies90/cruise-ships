@@ -22,14 +22,25 @@ describe('constructor', () => {
     it('Contains currentPort property equal to the first port object in the itinerary passed in as argument', () => {
         expect(ship).toEqual(expect.objectContaining({currentPort: okinawa}));
     });
-    it('Throws an error if it does not receive an object as argument', () => {
+    it('Throws an error if it receives a falsy argument or does not receive a string as the name argument', () => {
         expect(() => {
-            const ship2 = new Ship('Ragnarok', 'JLB Credit');
-        }).toThrow('Please pass in a valid object')
+            const failShip = new Ship(888, schedule);
+        }).toThrow('Please pass in valid arguments');
+        expect(() => {
+            const failShipMk2 = new Ship('', schedule);
+        }).toThrow('Please pass in valid arguments');
+    });
+    it('Throws an error if it receives a falsy argument or does not receive an object as the itinerary argument', () => {
+        expect(() => {
+            const failShipMk3 = new Ship('Ragnarok', 'JLB Credit');
+        }).toThrow('Please pass in valid arguments');
+        expect(() => {
+            const failShipMk4 = new Ship('Ragnarok');
+        }).toThrow('Please pass in valid arguments');
     });
     it('Adds ship to the port ports array when instantiated', () => {
-        const dover = {name: 'Dover', ships: [], addShip: jest.fn()}
-        const itin = {ports: [dover]}
+        const dover = {name: 'Dover', ships: [], addShip: jest.fn()};
+        const itin = {ports: [dover]};
         const ship2 = new Ship('HMS Pepe', itin);
         expect(ship2.currentPort.addShip).toHaveBeenCalledWith(ship2);
     })
@@ -94,12 +105,11 @@ describe('dock', () => {
         ship.dock();
         expect(ship.currentPort).toBe(miyajima);
     });
-
     it('Adds ship to ports array on the port object', () =>
     {
         ship.setSail();
         ship.dock();
-        expect(ship.currentPort.addShip).toHaveBeenCalledWith('jeff');
+        expect(ship.currentPort.addShip).toHaveBeenCalledWith(ship);
     });
     it('Will not dock if already docked', () => {
         expect(() => {
