@@ -1,7 +1,7 @@
 class Ship {
     constructor(name, itinerary) {
-        if (typeof itinerary !== 'object') {
-            throw new Error('Please pass in a valid object')
+        if (!name || !itinerary || typeof name !== 'string' || typeof itinerary !== 'object') {
+            throw new Error('Please pass in valid arguments')
         };
         this.name = name;
         this.currentPort = itinerary.ports[0];
@@ -41,4 +41,4 @@ class Ship {
 
 
 
-module.exports = Ship
+module.exports = Ship;
