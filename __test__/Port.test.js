@@ -1,9 +1,13 @@
 const Port = require("../src/port");
 
 let ishinomaki;
+let surge;
+let highwind;
 
 beforeEach(() => {
     ishinomaki = new Port('Ishinomaki');
+    surge = {name: 'Surge', currentPort: ishinomaki};
+    highwind = {name: 'Highwind', currentPort: ishinomaki};
 });
 
 describe('constructor', () => {
@@ -30,23 +34,19 @@ describe('constructor', () => {
 
 describe('addShip', () => {
     it('Adds a ship to the ships array', () => {
-        const ship = {name: 'Surge', currentPort: ishinomaki};
-        const ship2 = {name: 'Highwind', currentPort: ishinomaki};
-        ishinomaki.addShip(ship);
-        ishinomaki.addShip(ship2);
-        expect(ishinomaki.ships).toEqual([ship, ship2]);
+        ishinomaki.addShip(surge);
+        ishinomaki.addShip(highwind);
+        expect(ishinomaki.ships).toEqual([surge, highwind]);
     });
 });
 
 describe('removeShip', () => {
     //This test passes if the ships contain exactly the same properties and values so added name to test it actually works - Need to think of a way of testing this without this work around.
     it('Removes a ship from the ships array', () => {
-        const ship = {currentPort: ishinomaki, name: 'Barry'};
-        const ship2 = {currentPort: ishinomaki, name: 'Paul'};
-        ishinomaki.addShip(ship);
-        ishinomaki.addShip(ship2);
-        ishinomaki.removeShip(ship2);
-        expect(ishinomaki.ships).toStrictEqual([ship]);
+        ishinomaki.addShip(surge);
+        ishinomaki.addShip(highwind);
+        ishinomaki.removeShip(surge);
+        expect(ishinomaki.ships).toEqual([highwind]);
     });
 })
 
