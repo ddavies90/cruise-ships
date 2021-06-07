@@ -4,6 +4,8 @@ let schedule;
 let ship;
 let okinawa;
 let miyajima;
+let dover;
+let itin;
 
 beforeEach(() => {
     okinawa = {name: 'Okinawa', addShip: jest.fn(), removeShip: jest.fn(), ships: []};
@@ -11,6 +13,11 @@ beforeEach(() => {
     schedule = {ports: [okinawa, miyajima]};
     ship = new Ship('Highwind', schedule);
 });
+
+beforeAll(() => {
+    dover = {name: 'Dover', ships: [], addShip: jest.fn()};
+    itin = {ports: [dover]};
+})
 
 describe('constructor', () => {
     it('Creates new instance of the Ship object', () => {
@@ -39,8 +46,6 @@ describe('constructor', () => {
         }).toThrow('Please pass in valid arguments');
     });
     it('Adds ship to the port ports array when instantiated', () => {
-        const dover = {name: 'Dover', ships: [], addShip: jest.fn()};
-        const itin = {ports: [dover]};
         const ship2 = new Ship('HMS Pepe', itin);
         expect(ship2.currentPort.addShip).toHaveBeenCalledWith(ship2);
     })
@@ -56,25 +61,25 @@ describe('boardPassenger', () => {
     it('Throws an error if empty string is passed in', () => {
         expect(() => {
             ship.boardPassenger = '';
-        }).toThrow('Please enter a name to use this function');
+        }).toThrow('Please enter a valid name');
     });
     it('Throws an error if a name containing < 2 letters is passed', () => {
         expect(() => {
             ship.boardPassenger = 'J';
-        }).toThrow('Please enter a name to use this function');
+        }).toThrow('Please enter a valid name');
     });
     it('Throws an error is a number is passed in as a name, even if it is a string', () => {
         expect(() => {
             ship.boardPassenger = '888';
-        }).toThrow('Please enter a name to use this function');
+        }).toThrow('Please enter a valid name');
         expect(() => {
             ship.boardPassenger = 8;
-        }).toThrow('Please enter a name to use this function');
+        }).toThrow('Please enter a valid name');
     });
     it('Throws an error if there a number anywhere in the passed string', () => {
         expect(() => {
             ship.boardPassenger = 'f7643';
-        }).toThrow('Please enter a name to use this function');
+        }).toThrow('Please enter a valid name');
     });
 });
 
