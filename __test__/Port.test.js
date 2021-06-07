@@ -6,8 +6,8 @@ let highwind;
 
 beforeEach(() => {
     ishinomaki = new Port('Ishinomaki');
-    surge = {name: 'Surge', currentPort: ishinomaki};
-    highwind = {name: 'Highwind', currentPort: ishinomaki};
+    surge = {name: 'Surge'};
+    highwind = {name: 'Highwind'};
 });
 
 describe('constructor', () => {
