@@ -12,7 +12,7 @@ class Ship {
     };
     set boardPassenger(passenger) {
         if (!passenger || typeof passenger !== 'string' || passenger.length < 2 || !isNaN(parseInt(passenger)) || (/\d/).test(passenger)) {
-            throw new Error('Please enter a name to use this function')
+            throw new Error('Please enter a valid name')
         } else {
         this.passengers.push(passenger);
         };
