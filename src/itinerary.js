@@ -7,6 +7,6 @@
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = Itinerary;
     } else {
-        window.Port = Itinerary;
+        window.Itinerary = Itinerary;
     }
 }());
