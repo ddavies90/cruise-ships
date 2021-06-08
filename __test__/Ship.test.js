@@ -17,7 +17,7 @@ beforeEach(() => {
 beforeAll(() => {
     dover = {name: 'Dover', ships: [], addShip: jest.fn()};
     itin = {ports: [dover]};
-})
+});
 
 describe('constructor', () => {
     it('Creates new instance of the Ship object', () => {
